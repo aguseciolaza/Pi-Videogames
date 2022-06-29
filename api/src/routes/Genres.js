@@ -6,10 +6,11 @@ const {API_KEY} = process.env;
 
 const infoApi = async () => {
     const apiData = await axios.get(`https://api.rawg.io/api/genres?key=${API_KEY}`);
-    const genres = apiData.data.results
-    genres.forEach(async (g) => {
-           await Genre.findOrCreate({where:{id: g.id,name: g.name}})
-    });
+    const genres = await apiData.data.results.map((g) => {
+        Genre.findOrCreate({where:{id: g.id,name: g.name}});
+        });
+    const genresDB = await Genre.findAll();
+    return genresDB;
 }
 
 
@@ -18,9 +19,8 @@ router.get('/', async(req,res) => {
         let checkDB = await Genre.findAll();
         if (!checkDB.length) {
             const genres = await infoApi();
-            return res.status(200).send(genres);
+            return res.status(200).send(genres); 
         } else {
-            console.log('okey 2');
             return res.status(200).send(checkDB)}
     }catch(e){
     return res.status(404).send('algo salio mal con el get genres')}

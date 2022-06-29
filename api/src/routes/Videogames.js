@@ -17,6 +17,8 @@ const getInfoApi = async () => {
             name: game.name,
             released: game.released,
             rating: game.rating ? game.rating : 0, 
+            image: game.background_image,
+            createdInDb: false,
             parent_platforms: game.platforms.map(p => p.platform.name).join(', '),
             genres: game.genres.map(g => g.name).join(', ')
         }
@@ -25,20 +27,32 @@ const getInfoApi = async () => {
     }
 
 const getInfoDB = async () => {
-    return await Videogame.findAll({
+    try{
+    let dbjson = await Videogame.findAll({
         include: {
             model: Genre,
             attributes: ['name'],
             through: {
                 attributes: []
-            }
-        }
-    })
+            }}});
+    let dbMap = dbjson.map(game => { //aca agregar ?
+        return {
+            id: game.id,
+            name: game.name,
+            released: game.released ? game.released : "Not date",
+            rating: game.rating ? game.rating : 0, 
+            createdInDb: game.createdInDb,
+            parent_platforms: game.parent_platforms.join(', '),
+            genres: game.genres.map(g => g.name).join(', ')
+        }});
+
+    return dbMap;
+    }catch(e){res.send('el error en getInfoDB')}
 }
 
 const mergeinfo = async () => {
-    var apiGames = await getInfoApi();
     var dbGames = await getInfoDB();
+    var apiGames = await getInfoApi();
     var totalGames = apiGames.concat(dbGames);
     return totalGames;
 }
@@ -51,6 +65,7 @@ const nameQuery = async (name) => {
             name: game.name,
             released: game.released,
             rating: game.rating ? game.rating : 0, 
+            image: game.background_image,
             parent_platforms: game.platforms.map(p => p.platform.name).join(', '),
             genres: game.genres.map(g => g.name).join(', ')
         }
