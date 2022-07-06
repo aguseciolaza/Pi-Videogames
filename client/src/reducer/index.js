@@ -1,9 +1,11 @@
-import { GET_ALL_VIDEOGAMES , GET_ALL_GENRES, FILTER_BY_CREATED, FILTER_BY_GENRE, SORT_BY_NAME,SORT_BY_RATING, SEARCH_GAME} from "../actions";
+import { GET_ALL_VIDEOGAMES , GET_ALL_GENRES, FILTER_BY_CREATED, FILTER_BY_GENRE, SORT_BY_NAME,SORT_BY_RATING, SEARCH_GAME, POST_VIDEOGAME, GET_VIDEOGAME_ID, CLEAN_DETAIL, REFRESH} from "../actions";
 
 const initialState = {
     videogames: [],
     allVideogames: [],
-    genres: []
+    genres: [],
+    videogameDetail: {},
+    platforms: ["PC", "PlayStation 5", "PlayStation 4", "Xbox One", "Xbox Series S/X", "Nintendo Switch", "iOS", "Android", "Nintendo 3DS", "macOS", "Xbox 360", "Xbox", "PlayStation 3", "PlayStation 2", "Wii U", "Nintendo 64", "Game Boy Advance", "Game Boy Color", "Game Boy", "GameCube"]
   }
   
   const rootReducer = (state = initialState, action) => {
@@ -21,7 +23,7 @@ const initialState = {
             }
             case FILTER_BY_CREATED:
               const allVideogames = state.allVideogames ;
-              const filteredGames = action.payload ? allVideogames.filter(g => g.createdInDb) : allVideogames.filter(g => !g.createdInDb)
+              const filteredGames = action.payload == 'db'? allVideogames.filter(g => g.createdInDb == 'db') : allVideogames.filter(g => g.createdInDb == 'api')
               return {
                 ...state,
                 videogames: filteredGames
@@ -68,8 +70,28 @@ const initialState = {
                     case SEARCH_GAME:
                       return {
                         ...state,
-                        videogames:action.payload
+                        videogames: action.payload
                       }
+                      case POST_VIDEOGAME:
+                        return {
+                          ...state
+                        }
+                        case GET_VIDEOGAME_ID:
+                          return {
+                            ...state,
+                            videogameDetail: action.payload
+                          }
+                          case CLEAN_DETAIL:
+                            return{
+                              ...state,
+                              videogameDetail: {}
+                            }
+                            case REFRESH:
+                              const videogamesRefresh = state.allVideogames;
+                              return{
+                                ...state,
+                                videogames: videogamesRefresh
+                              }
       default:
         return state;
     }

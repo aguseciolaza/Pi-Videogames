@@ -2,7 +2,6 @@ const {Router} = require('express');
 const router = Router();
 const axios = require('axios');
 const {Videogame, Genre} =require('../db');
-// const Genre = require('../models/Genre');
 const {API_KEY} = process.env;
 const {Op} = require('sequelize');
 
@@ -17,9 +16,9 @@ const getInfoApi = async () => {
             name: game.name,
             released: game.released,
             rating: game.rating ? game.rating : 0, 
-            image: game.background_image,
-            createdInDb: false,
-            parent_platforms: game.platforms.map(p => p.platform.name).join(', '),
+            background_image: game.background_image,
+            createdInDb: 'api',
+            platforms: game.platforms.map(p => p.platform.name).join(', '),
             genres: game.genres.map(g => g.name).join(', ')
         }
     });
@@ -35,17 +34,17 @@ const getInfoDB = async () => {
             through: {
                 attributes: []
             }}});
-    let dbMap = dbjson.map(game => { //aca agregar ?
+    let dbMap = dbjson.map(game => {
         return {
             id: game.id,
             name: game.name,
             released: game.released ? game.released : "Not date",
             rating: game.rating ? game.rating : 0, 
+            background_image: game.background_image ? game.background_image : "img not found",
             createdInDb: game.createdInDb,
-            parent_platforms: game.parent_platforms.join(', '),
+            platforms: game.platforms.join(', '), //chequear
             genres: game.genres.map(g => g.name).join(', ')
         }});
-
     return dbMap;
     }catch(e){res.send('el error en getInfoDB')}
 }
@@ -63,15 +62,33 @@ const nameQuery = async (name) => {
         return {
             id: game.id,
             name: game.name,
-            released: game.released,
             rating: game.rating ? game.rating : 0, 
-            image: game.background_image,
-            parent_platforms: game.platforms.map(p => p.platform.name).join(', '),
+            background_image: game.background_image,
+            genres: game.genres.map(g => g.name).join(', ')
+        }});
+    const nameDb = await Videogame.findAll({
+        where: {name: {[Op.iLike]: `%${name}%`}},
+        include: {
+            model: Genre,
+            attributes: ['name'],
+            through: {
+                attributes: []
+            }}}); // check
+    const finalNameDb = nameDb.map(game => {
+        return {
+            id: game.id,
+            name: game.name,
+            rating: game.rating ? game.rating : 0, 
+            background_image: game.background_image,
             genres: game.genres.map(g => g.name).join(', ')
         }
     })
-    const nameDb = Videogame.findAll({where: {name: {[Op.iLike]: name}}});
-    if (arrayName.length) { return arrayName} else { return nameDb}
+    if (arrayName.length && finalNameDb.length) { 
+        const finalArray = arrayName.concat(finalNameDb);
+        return finalArray ;
+    } else if (arrayName.length) { 
+        return arrayName 
+    } else {return finalNameDb}
 }
 
 router.get('/', async (req, res) => {
@@ -81,7 +98,7 @@ router.get('/', async (req, res) => {
         const searchName = await nameQuery(name) ;
         if (searchName.length) { 
             res.status(201).send(searchName)
-        } else { res.send(`No existe ningun juego de nombre ${name}`)}
+        } else { res.send(`Nombre inexistente`)}
     }catch(e) {res.send('Error con el query name')}
     } else {
         try{
@@ -92,8 +109,8 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req,res) => {
-    const {name, description, released, rating, parent_platforms, genres} =req.body; 
-    if (!name || !description || !parent_platforms || !genres) {
+    const {name, description, released, rating, background_image, platforms, genres} =req.body; 
+    if (!name || !description || !platforms || !genres) {
         res.status(404).send('Faltan datos para crear el juego')
     } else {
         try {
@@ -102,10 +119,11 @@ router.post('/', async (req,res) => {
             description, 
             released, 
             rating, 
-            parent_platforms
+            background_image,
+            platforms
         }) 
-        res.status(201).send('Juego creado')
-        let genresDB = await Genre.findAll({where: {name: genres}}) ;
+        res.status(201).send('Juego creado') 
+        let genresDB = await Genre.findAll({where: {name: genres}}) ; //admite varios genres?
         console.log(genresDB)
         await newGame.addGenre(genresDB)
         } catch (error) {
@@ -114,5 +132,6 @@ router.post('/', async (req,res) => {
 
     }
 })
+
 
 module.exports = router;

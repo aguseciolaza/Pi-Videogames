@@ -1,0 +1,125 @@
+.home{
+    display: flex;
+    flex-direction: column;
+    background-image: url('https://hullwhatson.com/wp-content/uploads/2020/04/Gaming-Video-Games-Relax-De-Stress.jpg');
+}
+/* Encabezado */
+.header{
+  position:fixed;
+  background-color: rgba(198, 192, 192, 0.7);
+  width: 100%;
+  height: 80px;  
+  top: 0; left: 0;
+  margin: auto; }
+
+
+.middleHeader{
+    position: absolute;
+    left: 20px; 
+    display: inline;
+    top: 30px;
+    right:0px;
+    text-decoration: none;
+}
+
+.middleHeader label {
+margin: 15px;
+font-size: 15px;
+font-family: Arial, Helvetica, sans-serif;
+background-color: #3a3a3a;
+font-weight: bold;
+color: white;
+text-decoration-line: none;
+padding: 5px 10px;
+cursor: pointer;
+border-right: 2px solid rgb(34, 34, 34);
+border-bottom: 2px solid rgb(34, 34, 34);
+border-left: 2px solid rgb(82, 81, 81);
+border-top: 2px solid rgb(82, 81, 81);
+}
+
+.header .label:hover{
+    background-color: #666666;
+    transform: scale(1.1);
+}
+
+
+.home h1{
+    position: absolute;
+    align-items: center;
+    left: 20px; 
+    color:#1c1c1c
+}
+
+/* Renderización juegos */
+.cards{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 150px;
+}
+
+.cards label{
+    color:#c7c7c7;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: rgba(46, 42, 42, 0.7);
+    margin-bottom: 40%;
+}
+
+/* Barra Lateral*/
+#btn-menu{
+    display: none; /* para que no se vea el boton de check */
+}
+.container-menu{
+    position: absolute; 
+    background: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 120vh;
+    top: 0;
+    left: 0; /* para que este pegado arriba y a la izquierda */
+    transition: all 500ms ease; /* para que cuando le demos ocultar sea suave */
+    opacity: 0;
+    visibility: hidden;
+}
+#btn-menu:checked ~ .container-menu{
+    opacity: 1;
+    visibility: visible;
+}
+.cont-menu{
+    width: 100%;
+    max-width: 250px; /* aca le limitamos el ancho*/
+    background: #1c1c1c;
+    height: 120vh;
+    position: relative; /*  para que la cruz no se vaya*/
+    transition: all 500ms ease;
+    transform: translateX(-100%);
+}
+#btn-menu:checked ~ .container-menu .cont-menu{
+    transform: translateX(0%);
+}
+
+.cont-menu label{
+    display: block; /* para que cada etiqueta sea un bloque, no se wrapen*/ 
+    padding: 5px;
+    color: #c7c7c7;
+    transition: all 400ms ease;
+}
+
+.tit{
+    font-weight: bold;
+    font-size: 25px;
+}
+.cont-menu h3{
+    color: #c7c7c7;
+    margin: 5px;
+}
+
+#x {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    color: #f1e7e7;
+    cursor: pointer;
+    font-size: 15px;
+}

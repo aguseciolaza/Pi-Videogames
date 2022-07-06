@@ -1,0 +1,13 @@
+.inicio{
+    font-size: 22px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    height: 100vh;
+    background-image: url('https://blog.ida.cl/wp-content/uploads/sites/5/2020/05/ida-uxvideojuegos-blog.png') ;
+    background-size: 100% 100%;
+}
+
+.button{
+    font-size: 20px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ;
+
+}

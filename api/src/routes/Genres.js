@@ -9,8 +9,8 @@ const infoApi = async () => {
     const genres = await apiData.data.results.map((g) => {
         Genre.findOrCreate({where:{id: g.id,name: g.name}});
         });
-    const genresDB = await Genre.findAll();
-    return genresDB;
+    const genresDB = await Genre.findAll(); // vuelvo a traerlos desde la bs
+    return genresDB; // lo retorno para poder devolverlo en el get y llenar el state
 }
 
 
