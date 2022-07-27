@@ -1,4 +1,4 @@
-import { GET_ALL_VIDEOGAMES , GET_ALL_GENRES, FILTER_BY_CREATED, FILTER_BY_GENRE, SORT_BY_NAME,SORT_BY_RATING, SEARCH_GAME, POST_VIDEOGAME, GET_VIDEOGAME_ID, CLEAN_DETAIL, REFRESH} from "../actions";
+import { GET_ALL_VIDEOGAMES , GET_ALL_GENRES, FILTER_BY_CREATED, FILTER_BY_GENRE, SORT_BY_NAME,SORT_BY_RATING, SEARCH_GAME, POST_VIDEOGAME, GET_VIDEOGAME_ID, CLEAN_DETAIL, REFRESH, CLEAR_VIDEOGAMES} from "../actions";
 
 const initialState = {
     videogames: [],
@@ -36,7 +36,7 @@ const initialState = {
                   videogames: filteredGenre
                 }
                 case SORT_BY_RATING:
-                  let sortRating = action.payload === 'asc' ?
+                  let sortRating = action.payload === 'ascRating' ?
                   state.videogames.sort((a,b) => { //pongo el state antes sino estoy agarrando las variables de arriba
                     if (a.rating > b.rating) {return 1 }
                     if (a.rating < b.rating) {return -1}
@@ -52,7 +52,7 @@ const initialState = {
                     videogames: sortRating
                   }
                   case SORT_BY_NAME:
-                    let sortName = action.payload === 'asc' ?
+                    let sortName = action.payload === 'ascName' ?
                     state.videogames.sort((a,b) => {
                       if (a.name > b.name) {return 1}
                       if (a.name < b.name) {return -1}
@@ -92,6 +92,12 @@ const initialState = {
                                 ...state,
                                 videogames: videogamesRefresh
                               }
+                              case CLEAR_VIDEOGAMES:
+                                return{
+                                  ...state,
+                                  videogames: []
+                                }
+                              
       default:
         return state;
     }

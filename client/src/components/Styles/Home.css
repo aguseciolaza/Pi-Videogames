@@ -10,8 +10,8 @@
   width: 100%;
   height: 80px;  
   top: 0; left: 0;
-  margin: auto; }
-
+  margin: auto; 
+}
 
 .middleHeader{
     position: absolute;
@@ -23,19 +23,19 @@
 }
 
 .middleHeader label {
-margin: 15px;
-font-size: 15px;
-font-family: Arial, Helvetica, sans-serif;
-background-color: #3a3a3a;
-font-weight: bold;
-color: white;
-text-decoration-line: none;
-padding: 5px 10px;
-cursor: pointer;
-border-right: 2px solid rgb(34, 34, 34);
-border-bottom: 2px solid rgb(34, 34, 34);
-border-left: 2px solid rgb(82, 81, 81);
-border-top: 2px solid rgb(82, 81, 81);
+    margin: 15px;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #3a3a3a;
+    font-weight: bold;
+    color: white;
+    text-decoration-line: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-right: 2px solid rgb(34, 34, 34);
+    border-bottom: 2px solid rgb(34, 34, 34);
+    border-left: 2px solid rgb(82, 81, 81);
+    border-top: 2px solid rgb(82, 81, 81);
 }
 
 .header .label:hover{
@@ -43,12 +43,11 @@ border-top: 2px solid rgb(82, 81, 81);
     transform: scale(1.1);
 }
 
-
 .home h1{
     position: absolute;
     align-items: center;
     left: 20px; 
-    color:#1c1c1c
+    color:#1c1c1c;
 }
 
 /* Renderización juegos */
@@ -106,6 +105,29 @@ border-top: 2px solid rgb(82, 81, 81);
     transition: all 400ms ease;
 }
 
+.cont-menu button{
+    /* display: block; /* para que cada etiqueta sea un bloque, no se wrapen*/ 
+    /* margin-left: 40px; */
+    color: #c7c7c7;
+    transition: all 400ms ease;
+    margin: 5px;
+    font-size: 15px;
+    background-color: #3a3a3a;
+    font-weight: bold;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-right: 2px solid rgb(34, 34, 34);
+    border-bottom: 2px solid rgb(34, 34, 34);
+    border-left: 2px solid rgb(82, 81, 81);
+    border-top: 2px solid rgb(82, 81, 81);
+}
+
+.cont-menu button:hover{
+    background-color: #666666;
+    transform: scale(1.1);
+}
+
 .tit{
     font-weight: bold;
     font-size: 25px;
@@ -113,6 +135,8 @@ border-top: 2px solid rgb(82, 81, 81);
 .cont-menu h3{
     color: #c7c7c7;
     margin: 5px;
+    margin-top: 10px;
+    font-size: 22px;
 }
 
 #x {

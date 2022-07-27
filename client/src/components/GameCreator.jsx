@@ -16,7 +16,7 @@ function validator(input) {
     } else if (!input.genres.length) {
         errors.genres = "Se requieren géneros"
     } else if (!input.description) {
-        errors.description = "se requiere una descripción"
+        errors.description = "Se requiere una descripción"
     } 
     return errors;
 }
@@ -34,9 +34,9 @@ const [error, setError] = useState({})
 const [input, setInput] = useState({
     name: "",
     description: "",
-    released: "",
-    rating: "", 
-    image: "",
+    // released: "",
+    // rating: "", 
+    // image: "",
     genres: [],
     platforms: []
 })
@@ -52,6 +52,7 @@ function handlerChange(e){
     }))}
 
 function handlerCheckGenres(e){
+    if (!input.genres.includes(e.target.value)) {
     setInput({
         ...input,
         genres: [...input.genres, e.target.value]
@@ -59,9 +60,11 @@ function handlerCheckGenres(e){
     setError(validator({
         ...input, 
         [e.target.name] : e.target.value
-    }))}
+    }))
+    }}
 
     function handlerCheckPlatform(e){
+        if (!input.platforms.includes(e.target.value)) {
         setInput({
             ...input,
             platforms: [...input.platforms, e.target.value]
@@ -69,7 +72,8 @@ function handlerCheckGenres(e){
         setError(validator({
             ...input, 
             [e.target.name] : e.target.value
-        }))}
+        })) 
+    }}
 
 
 function handlerSubmit(e){
@@ -154,14 +158,14 @@ return (
                 <div className="box">
                     <label className="tituloBox">Géneros</label>
                 {allGenres.map((g) => (  
-                    <label><input type="checkbox" name={g.name} value={g.name} onChange={(e) => handlerCheckGenres(e)}/>{g.name}</label>
+                    <label><input type="checkbox" value={g.name} onChange={(e) => handlerCheckGenres(e)}/>{g.name}</label>
                 ))}
                 { error.genres && ( <p className="error">{error.genres}</p> )}
                 </div>
                 <div className="box">
                     <label className="tituloBox">Plataformas</label>
                 {platforms.map((p) => (  
-                    <label><input type="checkbox" name={p} value={p} onChange={(e) => handlerCheckPlatform(e)}/>{p}</label>
+                    <label><input type="checkbox" value={p} onChange={(e) => handlerCheckPlatform(e)}/>{p}</label>
                 ))}
                 { error.platforms && ( <p className="error">{error.platforms}</p> )}
                 </div>

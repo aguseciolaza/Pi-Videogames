@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {getAllGenres, getAllVideogames, filterByCreated, filterByGenre, SortByRating, SortByName, searchGame, refresh} from '../actions';
+import {getAllGenres, getAllVideogames, filterByCreated, filterByGenre, SortByRating, SortByName, searchGame, refresh, clearVideogames} from '../actions';
 import { useDispatch, useSelector } from "react-redux";
 import Paginado from "./Paginado";
 import Card from "./Card";
@@ -14,6 +14,9 @@ export default function Home(){
     useEffect(() => {
         dispatch(getAllGenres());
         dispatch(getAllVideogames());
+        return () => {
+            dispatch(clearVideogames())
+        }
     }, [dispatch]);
 
     const allGenres = useSelector(state => state.genres);
@@ -30,24 +33,30 @@ export default function Home(){
 
 
     function HandlerFilterCreated(e){
-        dispatch(filterByCreated(e.target.value)) }
+        dispatch(filterByCreated(e.target.value))
+        setCurrentPage(1)
+     }
 
     function HandlerFilterGenre(e){
         dispatch(filterByGenre(e.target.value)) }
 
-    const [orden, setOrden]= useState(""); //para que es?
+    const [ordenRating, setOrdenRating]= useState("ascRating");
+    const [ordenName, setOrdenName]= useState("ascName");
+
 
     function handlerSortRating(e){
         e.preventDefault();
-        dispatch(SortByRating(e.target.value))
-        setCurrentPage(1);
-        setOrden(`Ordenado ${e.target.value}`) }
+        ordenRating === "ascRating" ? setOrdenRating("desRating") : setOrdenRating("ascRating") ;
+        dispatch(SortByRating(ordenRating))
+        setCurrentPage(1); 
+     }
 
     function handlerSortName(e){
         e.preventDefault();
-        dispatch(SortByName(e.target.value))
+        ordenName === "ascName" ? setOrdenName("desName") : setOrdenName("ascName") ;
+        dispatch(SortByName(ordenName))
         setCurrentPage(1);
-        setOrden(`Ordenado ${e.target.value}`) }
+    }
 
     function handleRefresh(e){
         e.preventDefault();
@@ -67,7 +76,7 @@ export default function Home(){
             <label className="filtro" for="btn-menu">&#9776;</label>
             <label className="refresh" onClick={e => handleRefresh(e)}>&#8634;</label>
             </div>
-            <SearchBar className="searchBar" searchGame={searchGame} />
+            <SearchBar className="searchBar" searchGame={searchGame} setCurrentPage={setCurrentPage} />
             </header>
             {/* Fin del encabezado */}
             {/* Renderización juegos y paginado */}
@@ -88,19 +97,17 @@ export default function Home(){
                 <div class="cont-menu">
 
                 <label className="tit">Ordenamiento</label>
-                <label> <input type='checkbox' name="asc" value='asc' onChange={e => handlerSortName(e)} />A - Z </label>
-                <label> <input type='checkbox' name="des" value='des' onChange={e => handlerSortName(e)} />Z - A </label>
-                <label> <input type='checkbox' name="asc" value='asc' onChange={e => handlerSortRating(e)} />0 - 5  </label>
-                <label> <input type='checkbox' name="des" value='des' onChange={e => handlerSortRating(e)} />5 - 0 </label>
+                <button className="sort" onClick={e => handlerSortName(e)}>A - Z </button>
+                <button className="sort" onClick={e => handlerSortRating(e)}>0 - 5</button>
 
                 <label className="tit">Filtrado</label>
-                <label> <input type='checkbox'  value='api' onChange={e => HandlerFilterCreated(e)} />Existente</label>
-                <label> <input type='checkbox'  value='db' onChange={e => HandlerFilterCreated(e)} />Creado</label>
+                <button className="sort" value='api' onClick={e => HandlerFilterCreated(e)}>Existente</button>
+                <button className="sort" value='db' onClick={e => HandlerFilterCreated(e)}>Creado</button>
 
                 <h3>Géneros</h3>
                 {allGenres?.map((g) => {
                     return (
-                    <label><input type='checkbox' value={g.name} onChange={e => HandlerFilterGenre(e)} />{g.name} </label>    
+                    <button className="sort" value={g.name} onClick={e => HandlerFilterGenre(e)}>{g.name}</button>    
                     )
                 })}
                     <label id="x" for="btn-menu">✖️</label>

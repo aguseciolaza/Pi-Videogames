@@ -11,11 +11,12 @@ export const POST_VIDEOGAME = 'POST_VIDEOGAME'
 export const GET_VIDEOGAME_ID = 'GET_VIDEOGAME_ID'
 export const CLEAN_DETAIL = 'CLEAR_DETAIL'
 export const REFRESH = 'REFRESH'
+export const CLEAR_VIDEOGAMES = 'CLEAR_VIDEOGAMES'
 
 
 export function getAllVideogames() {
     return async function(dispatch){
-        const json = await axios.get('http://localhost:3001/videogames');
+        const json = await axios.get('/videogames');
         return dispatch({
          type: GET_ALL_VIDEOGAMES, 
          payload: json.data
@@ -23,7 +24,7 @@ export function getAllVideogames() {
 }
 export function getAllGenres() {
     return async function(dispatch){
-        const json = await axios.get('http://localhost:3001/genres');
+        const json = await axios.get('/genres');
         return dispatch({
          type: GET_ALL_GENRES, 
          payload: json.data
@@ -55,7 +56,7 @@ export function SortByName(payload) {
 }
 export function searchGame(game) {
     return async function(dispatch){
-        const json = await axios.get(`http://localhost:3001/videogames?name=${game}`);
+        const json = await axios.get(`/videogames?name=${game}`);
         return dispatch({
          type: SEARCH_GAME, 
          payload: json.data
@@ -63,7 +64,7 @@ export function searchGame(game) {
 }
 export function postVideogame(payload){
     return async function(dispatch){
-        const response = await axios.post('http://localhost:3001/videogames', payload);
+        const response = await axios.post('/videogames', payload);
         return dispatch({
             type: POST_VIDEOGAME
         })
@@ -71,7 +72,7 @@ export function postVideogame(payload){
 }
 export function getVideogameId(payload){
     return async function(dispatch){
-        const json = await axios.get(`http://localhost:3001/videogame/${payload}`)
+        const json = await axios.get(`/videogame/${payload}`)
         return dispatch({
             type: GET_VIDEOGAME_ID,
             payload: json.data
@@ -86,5 +87,10 @@ export function cleanDetail(){
 export function refresh(){
     return {
         type: REFRESH
+    }
+}
+export function clearVideogames(){
+    return {
+        type: CLEAR_VIDEOGAMES
     }
 }
