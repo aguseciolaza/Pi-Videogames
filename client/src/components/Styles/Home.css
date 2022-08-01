@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     background-image: url('https://hullwhatson.com/wp-content/uploads/2020/04/Gaming-Video-Games-Relax-De-Stress.jpg');
+    /* background-color:beige; */
 }
 /* Encabezado */
 .header{
